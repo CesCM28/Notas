@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+
+{% block header %}
+    <h1>{% block title %}Notas{% endblock %}</h1>
+{% endblock %}
+
+{% block content %}
+    <form method="post">
+        <label for="titulo">Titulo</label>
+        <input name="titulo" id="titulo" required />
+        <label for="parrafo">Parrafo</label>
+        <input name="parrafo" id="parrafo" required />
+        <input type="submit" value="Iniciar sesión" />
+    </form>
+{% endblock %}
