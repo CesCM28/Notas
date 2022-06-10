@@ -11,6 +11,16 @@ from DB.db import get_db
 application = Flask(__name__)
 application.secret_key = "super secret key"
 
+def login_required(view):
+    @functools.wraps(view)
+    def wrapped_view(**kwargs):
+        if g.user is None:
+            return redirect(url_for('index'))
+        
+        return view(**kwargs)
+
+    return wrapped_view
+
 @application.route('/', methods=['GET', 'POST'])
 def login():
     if request.method == 'POST':
@@ -41,32 +51,59 @@ def login():
     return render_template('login.html')
 
 
-# @application.before_app_request
-# def load_logged_in_user():
-#     user_id = session.get('user_id')
-
-#     if user_id is None:
-#         g.user = None 
-#     else:
-#         db, c = get_db()
-#         c.execute(
-#             "select * from users where id = ?", (user_id)
-#         )
-#         g.user = c.fetchone()
+@application.before_request
+def load_logged_in_user():
+    user_id = session.get('user_id')
+    if user_id is None:
+        g.user = None 
+    else:
+        db, c = get_db()
+        c.execute(
+            "select * from user where id = %s", (user_id,)
+        )
+        g.user = c.fetchone()
 
 @application.route('/index', methods=['GET', 'POST'])
+@login_required
 def index():
-    return render_template('index.html')
-
-def login_required(view):
-    @functools.wraps(view)
-    def wrapped_view(**kwargs):
-        if g.user is None:
-            return redirect(url_for('index'))
+    db, c = get_db()
+    if request.method == 'POST':
         
-        return view(**kwargs)
+        titulo = request.form['titulo']
+        imagen = request.form['imagen']
+        categoria = request.form['categoria']
+        parrafo1 = request.form['parrafo1']
+        parrafo2 = request.form['parrafo2']
+        parrafo3 = request.form['parrafo3']
+        parrafo4 = request.form['parrafo4']
+        parrafo5 = request.form['parrafo5']
+        parrafo6 = request.form['parrafo6']
+        c.execute(
+            """
+            INSERT INTO news (id_category,created_at,title,paragraph1,paragraph2,paragraph3,paragraph4,paragraph5,paragraph6,link_img,created_by,status)
+            VALUES ( %s, curdate(),%s, %s, %s, %s, %s, %s, %s, %s, %s, 0)
+            """, (categoria,titulo,parrafo1,parrafo2,parrafo3,parrafo4,parrafo5,parrafo6,imagen,session['user_id'])
+        )
+        db.commit()
 
-    return wrapped_view
+
+    c.execute(
+        '''
+        select c.description,n.id_news,n.id_category,n.created_at,n.title,n.paragraph1,n.paragraph2,n.paragraph3,n.paragraph4,n.paragraph5,n.paragraph6,n.link_img,n.created_by,n.status 
+        from news n 
+        inner join category c
+        on c.id_category = n.id_category
+            '''
+    )
+    news = c.fetchall()
+
+    return render_template('index.html', news=news)
+
+
+
+@application.route('/editar/<int:idnew>', methods=['GET'])
+def editar(idnew):
+    return render_template('index.html')
 
 
 @application.route('/logout')
