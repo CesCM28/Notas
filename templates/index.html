@@ -5,35 +5,44 @@
 {% endblock %}
 
 {% block content %}
+<h1 onclick="OculatarMostrar('registro')">registro</h1>
+<div class="show" id="registro">
     <form method="post">
         <label for="titulo">Titulo</label>
         <input name="titulo" id="titulo" required />
         <label for="imagen">link imagen</label>
         <input name="imagen" id="imagen" required />
         <label for="categoria">categoria</label>
-        <input name="categoria" id="categoria" required />
+        <select name="categoria" id="categoria" required>
+            <option value="" disabled selected>Selecionar</option>
+            {% for category in categorys %}
+            <option value="{{ category['id_category'] }}">{{ category['description'] }}</option>
+            {% endfor %}
+          </select>
         <br>
         <label for="parrafo1">Parrafo</label>
-        <textarea name="parrafo1" id="parrafo1" required ></textarea>
+        <textarea name="parrafo1" id="parrafo1" cols="100" rows="3" required ></textarea>
         <br>
         <label for="parrafo2">Parrafo</label>
-        <textarea name="parrafo2" id="parrafo2"></textarea>
+        <textarea name="parrafo2" id="parrafo2" cols="100" rows="3"></textarea>
         <br>
         <label for="parrafo3">Parrafo</label>
-        <textarea name="parrafo3" id="parrafo3"></textarea>
+        <textarea name="parrafo3" id="parrafo3" cols="100" rows="3"></textarea>
         <br>
         <label for="parrafo4">Parrafo</label>
-        <textarea name="parrafo4" id="parrafo4"></textarea>
+        <textarea name="parrafo4" id="parrafo4" cols="100" rows="3"></textarea>
         <br>
         <label for="parrafo5">Parrafo</label>
-        <textarea name="parrafo5" id="parrafo5"></textarea>
+        <textarea name="parrafo5" id="parrafo5" cols="100" rows="3"></textarea>
         <br>
         <label for="parrafo6">Parrafo</label>
-        <textarea name="parrafo6" id="parrafo6"></textarea>
+        <textarea name="parrafo6" id="parrafo6" cols="100" rows="3"></textarea>
         <br>
         <input type="submit" value="subir"/>
     </form>
-
+</div>
+<h1 onclick="OculatarMostrar('tabla')">Notas</h1>
+<div class="show" id="tabla" style="display:none !important;">
     <table>
         {% for new in news %}
         <tr>
@@ -52,4 +61,15 @@
         </tr>
         {% endfor %}
     </table>
+</div>
+
+<script>
+    function OculatarMostrar(valor){
+    if (document.getElementById(valor).style.display == "none") {
+        document.getElementById(valor).style.display = "block";
+    } else {
+        document.getElementById(valor).style.display = "none";
+    }
+}
+</script>
 {% endblock %}

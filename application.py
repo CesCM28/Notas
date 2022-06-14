@@ -89,7 +89,9 @@ def index():
 
     c.execute(
         '''
-        select c.description,n.id_news,n.id_category,n.created_at,n.title,n.paragraph1,n.paragraph2,n.paragraph3,n.paragraph4,n.paragraph5,n.paragraph6,n.link_img,n.created_by,n.status 
+        select c.description,n.id_news,n.id_category,n.created_at,n.title,
+            n.paragraph1,n.paragraph2,n.paragraph3,n.paragraph4,n.paragraph5,n.paragraph6,
+            n.link_img,n.created_by,n.status 
         from news n 
         inner join category c
         on c.id_category = n.id_category
@@ -97,13 +99,51 @@ def index():
     )
     news = c.fetchall()
 
-    return render_template('index.html', news=news)
+    c.execute(
+        'select id_category,description from category where status = 1'
+    )
+    categorys = c.fetchall()
+
+    return render_template('index.html', news=news, categorys=categorys)
 
 
 
-@application.route('/editar/<int:idnew>', methods=['GET'])
+@application.route('/editar/<int:idnew>', methods=['GET', 'POST'])
+@login_required
 def editar(idnew):
-    return render_template('index.html')
+    db, c = get_db()
+    c.execute("""
+        select id_news,id_category,title,paragraph1,paragraph2,paragraph3,paragraph4,paragraph5,paragraph6,link_img,status
+        from news where id_news = %s
+    """, (idnew,))
+    news = c.fetchone()
+
+    c.execute('select id_category,description from category where status = 1')
+    categorys = c.fetchall()
+
+    if request.method == 'POST':
+
+        titulo = request.form['titulo']
+        imagen = request.form['imagen']
+        categoria = request.form['categoria']
+        parrafo1 = request.form['parrafo1']
+        parrafo2 = request.form['parrafo2']
+        parrafo3 = request.form['parrafo3']
+        parrafo4 = request.form['parrafo4']
+        parrafo5 = request.form['parrafo5']
+        parrafo6 = request.form['parrafo6']
+        c.execute(
+            """
+            UPDATE news SET id_category = %s, title = %s,
+            paragraph1 = %s, paragraph2 = %s, paragraph3 = %s,
+            paragraph4 = %s, paragraph5 = %s, paragraph6 = %s
+            WHERE id_news = %s
+            """, (categoria,titulo,parrafo1,parrafo2,parrafo3,parrafo4,parrafo5,parrafo6,idnew)
+        )
+        db.commit()
+        return redirect(url_for('index'))
+
+    return render_template('editar.html', news=news, categorys=categorys)
 
 
 @application.route('/logout')
