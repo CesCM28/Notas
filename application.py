@@ -93,14 +93,14 @@ def index():
             n.paragraph1,n.paragraph2,n.paragraph3,n.paragraph4,n.paragraph5,n.paragraph6,
             n.link_img,n.created_by,n.status 
         from news n 
-        inner join category c
+        inner join categorys c
         on c.id_category = n.id_category
             '''
     )
     news = c.fetchall()
 
     c.execute(
-        'select id_category,description from category where status = 1'
+        'select id_category,description from categorys where status = 1'
     )
     categorys = c.fetchall()
 
@@ -118,7 +118,7 @@ def editar(idnew):
     """, (idnew,))
     news = c.fetchone()
 
-    c.execute('select id_category,description from category where status = 1')
+    c.execute('select id_category,description from categorys where status = 1')
     categorys = c.fetchall()
 
     if request.method == 'POST':
