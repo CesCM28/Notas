@@ -134,11 +134,11 @@ def editar(idnew):
         parrafo6 = request.form['parrafo6']
         c.execute(
             """
-            UPDATE news SET id_category = %s, title = %s,
+            UPDATE news SET id_category = %s, title = %s, link_img = %s,
             paragraph1 = %s, paragraph2 = %s, paragraph3 = %s,
             paragraph4 = %s, paragraph5 = %s, paragraph6 = %s
             WHERE id_news = %s
-            """, (categoria,titulo,parrafo1,parrafo2,parrafo3,parrafo4,parrafo5,parrafo6,idnew)
+            """, (categoria,titulo,imagen,parrafo1,parrafo2,parrafo3,parrafo4,parrafo5,parrafo6,idnew)
         )
         db.commit()
         return redirect(url_for('index'))
