@@ -1,8 +1,0 @@
-textarea {
-    columns: 100;
-}
-
-.show {
-    overflow: hidden;
-    transition: all .5s ease-in-out;
-}

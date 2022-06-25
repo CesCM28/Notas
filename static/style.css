@@ -1,0 +1,82 @@
+body {
+    background-color: #f0f0f0;
+    margin: 0px;
+}
+
+.header {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    top: 0;
+    right: 0;
+    width: 100%!important;
+    background-color: #000;
+    color: #fff;
+    height: 100px;
+}
+
+.content {
+    display: grid;
+    justify-content: center;
+    width: 100%;
+}
+
+textarea {
+    columns: 100;
+    border: 1px solid #000;
+    border-radius: 5px;
+}
+
+.Areas {
+    display: grid;
+    justify-content: center;
+    border: 1px solid #000;
+    border-radius: 5px;
+    width: 100%;
+}
+
+.login {
+    background-color: #fff;
+    border: 1px solid #2192d1;
+    border-radius: 5px ;
+    box-shadow: 5px 5px 5px 2px rgb(0 0 0 / 20%);
+    padding: 10px;
+    width: 400px;
+    height: 200px;
+}
+
+.renglon {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 15px;
+}
+
+.renglon-boton {
+    display: flex;
+    justify-content: center;
+}
+
+input {
+    width: 250px;
+    height: 30px;
+    border: 1px solid #000;
+    border-radius: 5px;
+    margin: 5px;
+}
+
+select {
+    width: 100px;
+    height: 35px;
+    border: 1px solid #000;
+    border-radius: 5px;
+    margin: 5px;
+}
+
+.botonVerde {
+    border: 0;
+    background-color: #03BB85;
+    height: 40px;
+    color: #fff;
+    font-weight: bold;
+}

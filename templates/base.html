@@ -1,23 +1,44 @@
 <!DOCTYPE html>
-<title>{% block title %}{% endblock %} - El Democrata</title>
-<link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
-<nav>
-    <h1>El Democrata</h1>
-    <ul>
-        {% if g.user %}
-            <li><span>{{ g.user['username'] }}</span></li>
-            <li><a href="{{ url_for('logout') }}">Cerrar sesión</a></li>
-        {% else %}
-            <li><a href="{{ url_for('login') }}">Iniciar sesión</a></li>
-        {% endif %}
-    </ul>
-</nav>
-<section class="content">
-    <header>
-        {% block header %}{% endblock %}
-    </header>
+
+<head>
+    <title>{% block title %}{% endblock %} - El Democrata</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+
+<body>
+    <!--<div class="head">
+        <div class="">
+            <h1>El Democrata</h1>
+        </div>
+        <div>
+            {% if g.user %}
+            <span>{{ g.user['username'] }}</span>
+            <a href="{{ url_for('logout') }}">Cerrar sesión</a>
+            {% else %}
+            <a href="{{ url_for('login') }}">Iniciar sesión</a>
+            {% endif %}
+            </ul>
+        </div>
+    </div>
+-->
+    <div class="header">
+        <div class="titulo">
+            {% block header %}{% endblock %}
+        </div>
+        <div>
+            {% if g.user %}
+            <span>{{ g.user['username'] }}</span>
+            <a href="{{ url_for('logout') }}">Cerrar sesión</a>
+            {% else %}
+            <a href="{{ url_for('login') }}">Iniciar sesión</a>
+            {% endif %}
+        </div>
+    </div>
     {% for message in get_flashed_messages() %}
-        <div class="flash">{{ message }}</div>
+    <div class="flash">{{ message }}</div>
     {% endfor %}
-    {% block content %}{% endblock %}
-</section>
+    <div class="content">
+        {% block content %}{% endblock %}
+    </div>
+
+</body>
