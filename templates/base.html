@@ -28,6 +28,10 @@
         <div>
             {% if g.user %}
             <span>{{ g.user['username'] }}</span>
+            <a href="{{ url_for('index') }}">Inicio</a>
+            <button onclick="OculatarMostrar('registro')">Registro</button>
+            <button onclick="OculatarMostrar('tabla')">Listado</button>
+            <button onclick="OculatarMostrar('usuarios')">Usuarios</button>
             <a href="{{ url_for('logout') }}">Cerrar sesión</a>
             {% else %}
             <a href="{{ url_for('login') }}">Iniciar sesión</a>

@@ -1,3 +1,4 @@
+from crypt import methods
 import functools
 from logging import error
 from flask import Flask
@@ -67,8 +68,7 @@ def load_logged_in_user():
 @login_required
 def index():
     db, c = get_db()
-    if request.method == 'POST':
-        
+    if request.method == 'POST':     
         titulo = request.form['titulo']
         imagen = request.form['imagen']
         categoria = request.form['categoria']
@@ -86,7 +86,6 @@ def index():
         )
         db.commit()
 
-
     c.execute(
         '''
         select c.description,n.id_news,n.id_category,n.created_at,n.title,
@@ -99,13 +98,13 @@ def index():
     )
     news = c.fetchall()
 
-    c.execute(
-        'select id_category,description from categorys where status = 1'
-    )
+    c.execute('select id_category,description from categorys where status = 1')
     categorys = c.fetchall()
 
-    return render_template('index.html', news=news, categorys=categorys)
+    c.execute('SELECT id,username,password,name FROM user')
+    users = c.fetchall()
 
+    return render_template('index.html', news=news, categorys=categorys, users=users)
 
 
 @application.route('/editar/<int:idnew>', methods=['GET', 'POST'])
@@ -126,7 +125,7 @@ def editar(idnew):
         titulo = request.form['titulo']
         imagen = request.form['imagen']
         categoria = request.form['categoria']
-        parrafo1 = request.form['parrafo1']
+        parrafo1 = request.form['parrafousers']
         parrafo2 = request.form['parrafo2']
         parrafo3 = request.form['parrafo3']
         parrafo4 = request.form['parrafo4']
@@ -144,6 +143,15 @@ def editar(idnew):
         return redirect(url_for('index'))
 
     return render_template('editar.html', news=news, categorys=categorys)
+
+@application.route('/<int:id>/users', methods=['GET', 'POST'])
+@login_required
+def users(id):
+    db, c = get_db()
+    c.execute('select id,username,password,name from user where id = %s', (id,))
+    user = c.fetchone()
+
+    return render_template('users.html', user=user)
 
 
 @application.route('/logout')

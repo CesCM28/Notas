@@ -19,6 +19,7 @@ body {
     display: grid;
     justify-content: center;
     width: 100%;
+    min-height: 400px;
 }
 
 textarea {
@@ -79,4 +80,9 @@ select {
     height: 40px;
     color: #fff;
     font-weight: bold;
+}
+
+.center {
+    display: flex;
+    align-items: center;
 }

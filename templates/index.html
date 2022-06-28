@@ -5,9 +5,8 @@
 {% endblock %}
 
 {% block content %}
-<div class="Areas">
-    <h1 class="renglon-boton" onclick="OculatarMostrar('registro')">Registro de Notas</h1>
-    <div class="show" id="registro">
+
+    <div class="show" id="registro" style="display:none !important;">
         <form method="post">
             <div class="renglon">
                 <label for="titulo">Titulo</label>
@@ -51,10 +50,8 @@
             </div>
         </form>
     </div>
-</div>
-<div class="Areas">
-    <h1 class="renglon-boton" onclick="OculatarMostrar('tabla')">Listado de Notas</h1>
-    <div class="show" id="tabla" style="display:none !important;">
+
+    <div class="show" id="tabla">
         <table>
             <th>
                 <td style="text-align: center;">Categoria</td>
@@ -79,13 +76,41 @@
             {% endfor %}
         </table>
     </div>
-</div>
+
+    <div class="show" id="usuarios" style="display:none !important;">
+        <table>
+            <th>
+                <td>Username</td>
+                <td>Nombre</td>
+            </th>
+            {% for user in users %}
+            <tr>
+                <td><a href="{{ url_for('users', id=user['id']) }}">{{ user['id'] }}</a></td>
+                <td>{{ user['username'] }}</td>
+                <td>{{ user['name'] }}</td>
+            </tr>
+            {% endfor %}
+        </table>
+    </div>
+
 <script>
     function OculatarMostrar(valor) {
-        if (document.getElementById(valor).style.display == "none") {
-            document.getElementById(valor).style.display = "block";
-        } else {
-            document.getElementById(valor).style.display = "none";
+        switch (valor) {
+            case "tabla":
+                document.getElementById(valor).style.display = "block";
+                document.getElementById("registro").style.display = "none";
+                document.getElementById("usuarios").style.display = "none";
+            break;
+            case "registro":
+                document.getElementById(valor).style.display = "block";
+                document.getElementById("tabla").style.display = "none";
+                document.getElementById("usuarios").style.display = "none";
+            break;
+            case "usuarios":
+                document.getElementById(valor).style.display = "block";
+                document.getElementById("tabla").style.display = "none";
+                document.getElementById("registro").style.display = "none";
+            break;
         }
     }
 </script>
