@@ -22,6 +22,16 @@ body {
     min-height: 400px;
 }
 
+.cerrar-sesion {
+    color: #fff;
+    background-color: #c70000;
+    font-size: bold;
+    padding: 4px;
+    border-radius: 4px;
+    text-decoration:none;
+    border: 1px solid #000;
+}
+
 textarea {
     columns: 100;
     border: 1px solid #000;
@@ -85,4 +95,30 @@ select {
 .center {
     display: flex;
     align-items: center;
+}
+
+table {
+    background-color: #fff;
+    border-collapse: collapse;
+    width: 100%;
+}
+
+th, td {
+    padding: 8px;
+    border-bottom: 1px solid #000;
+}
+
+thead { 
+    background-color: #0387bb;
+}
+
+.boton-editar {
+    color: #fff;
+    background-color: #0dac35;
+    font-size: bold;
+    width: 25px !important;
+    padding: 4px;
+    border-radius: 4px;
+    text-decoration:none;
+    text-align: center;
 }

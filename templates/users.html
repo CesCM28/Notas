@@ -6,18 +6,25 @@
 
 {% block content %}
 <div class="">
-    <form >
+    <form method="post">
+        <div class="renglon">
+            <label for="ids">Id</label>
+            <input id="ids" type="text" name="ids" value="{{ user['id'] }}" disabled required>
+        </div>
         <div class="renglon">
             <label for="UserName">Nombre de Usuario</label>
-            <input type="text" name="UserName" value="{{ user['username'] }}">
+            <input id="userName" type="text" name="userName" value="{{ user['username'] }}" required>
         </div>
         <div class="renglon">
             <label for="Name">Nombre</label>
-            <input type="text" name="Name" value="{{ user['name'] }}">
+            <input id="name" type="text" name="name" value="{{ user['name'] }}" required>
         </div>
         <div class="renglon">
             <label for="password">Contraseña</label>
-            <input type="password" name="password">
+            <input id="password" type="password" name="password" required>
+        </div>
+        <div class="renglon-boton">
+            <input class="botonVerde" type="submit" value="Actualizar">
         </div>
     </form>
 </div>

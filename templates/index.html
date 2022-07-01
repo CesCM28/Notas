@@ -53,15 +53,18 @@
 
     <div class="show" id="tabla">
         <table>
-            <th>
-                <td style="text-align: center;">Categoria</td>
-                <td style="text-align: center;">Titulo</td>
-                <td style="text-align: center;">Estado</td>
-            </th>
+            <thead>
+                <tr>
+                    <th>id</th>
+                    <th style="text-align: center;">Categoria</th>
+                    <th style="text-align: center;">Titulo</th>
+                    <th style="text-align: center;">Estado</th>
+                </tr>
+            </thead>
             {% for new in news %}
             <tr>
-                <td>
-                    <a href="{{ url_for('editar', idnew=new['id_news']) }}">{{ new['id_news'] }}</a>
+                <td class="center">
+                    <a class="boton-editar" href="{{ url_for('editar', idnew=new['id_news']) }}">{{ new['id_news'] }}</a>
                 </td>
                 <td>
                     {{ new['description'] }}
@@ -79,13 +82,16 @@
 
     <div class="show" id="usuarios" style="display:none !important;">
         <table>
-            <th>
-                <td>Username</td>
-                <td>Nombre</td>
-            </th>
+            <thead>
+                <tr>
+                    <th>id</th>
+                    <th>Username</th>
+                    <th>Nombre</th>
+                </tr>
+            </thead>
             {% for user in users %}
             <tr>
-                <td><a href="{{ url_for('users', id=user['id']) }}">{{ user['id'] }}</a></td>
+                <td class="center"><a class="boton-editar" href="{{ url_for('users', id=user['id']) }}">{{ user['id'] }}</a></td>
                 <td>{{ user['username'] }}</td>
                 <td>{{ user['name'] }}</td>
             </tr>

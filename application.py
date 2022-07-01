@@ -1,9 +1,8 @@
-from crypt import methods
 import functools
 from logging import error
 from flask import Flask
 from flask import (
-    Blueprint, blueprints, flash, g, render_template, request, url_for, session, redirect
+    flash, g, render_template, request, url_for, session, redirect
 )
 from werkzeug.security import check_password_hash, generate_password_hash
 from DB.db import get_db
@@ -34,14 +33,11 @@ def login():
         )
         user = c.fetchone()
 
-        print(user)
-
         if user is None:
             error = 'Usuario y/o contraseña invalida'
         #elif not check_password_hash(user['password'], password):
             #error = 'Usuario y/o contraseña invalida'
             
-
         if error is None:
             session.clear()
             session['user_id'] = user['id']
@@ -121,7 +117,6 @@ def editar(idnew):
     categorys = c.fetchall()
 
     if request.method == 'POST':
-
         titulo = request.form['titulo']
         imagen = request.form['imagen']
         categoria = request.form['categoria']
@@ -148,6 +143,24 @@ def editar(idnew):
 @login_required
 def users(id):
     db, c = get_db()
+
+    if request.method == 'POST':
+        username = request.form['userName']
+        name = request.form['name']
+        password = request.form['password']
+
+        c.execute(
+            """
+            UPDATE user
+            SET username = %s,
+            name = %s,
+            password = %s
+            WHERE id = %s
+            """, (username, name, generate_password_hash(password), id)
+        )
+        db.commit()
+
+
     c.execute('select id,username,password,name from user where id = %s', (id,))
     user = c.fetchone()
 

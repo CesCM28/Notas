@@ -1,11 +1,12 @@
 {% extends 'base.html' %}
 
 {% block header %}
-    <h1>{% block title %}Notas{% endblock %}</h1>
+<h1>{% block title %}Notas{% endblock %}</h1>
 {% endblock %}
 
 {% block content %}
-    <form method="post">
+<form method="post">
+    <div class="renglon">
         <label for="titulo">Titulo</label>
         <input name="titulo" id="titulo" value="{{ news['title'] }}" required />
         <label for="imagen">link imagen</label>
@@ -13,33 +14,41 @@
         <label for="categoria">categoria</label>
         <select name="categoria" id="categoria" required>
             {% for category in categorys %}
-                {% if news['id_category'] == category['id_category'] %}
-                    <option value="{{ category['id_category'] }}" selected>{{ category['description'] }}</option>
-                {% else %}
-                    <option value="{{ category['id_category'] }}">{{ category['description'] }}</option>
-                {% endif %}
+            {% if news['id_category'] == category['id_category'] %}
+            <option value="{{ category['id_category'] }}" selected>{{ category['description'] }}</option>
+            {% else %}
+            <option value="{{ category['id_category'] }}">{{ category['description'] }}</option>
+            {% endif %}
             {% endfor %}
-          </select>
-        <br>
+        </select>
+    </div>
+    <div class="renglon">
         <label for="parrafo1">Parrafo</label>
-        <textarea name="parrafo1" id="parrafo1" cols="100" rows="3" required >{{ news['paragraph1'] }}</textarea>
-        <br>
+        <textarea name="parrafo1" id="parrafo1" cols="100" rows="3" required>{{ news['paragraph1'] }}</textarea>
+    </div>
+    <div class="renglon">
         <label for="parrafo2">Parrafo</label>
         <textarea name="parrafo2" id="parrafo2" cols="100" rows="3">{{ news['paragraph2'] }}</textarea>
-        <br>
+    </div>
+    <div class="renglon">
         <label for="parrafo3">Parrafo</label>
         <textarea name="parrafo3" id="parrafo3" cols="100" rows="3">{{ news['paragraph3'] }}</textarea>
-        <br>
+    </div>
+    <div class="renglon">
         <label for="parrafo4">Parrafo</label>
         <textarea name="parrafo4" id="parrafo4" cols="100" rows="3">{{ news['paragraph4'] }}</textarea>
-        <br>
+    </div>
+    <div class="renglon">
         <label for="parrafo5">Parrafo</label>
         <textarea name="parrafo5" id="parrafo5" cols="100" rows="3">{{ news['paragraph5'] }}</textarea>
-        <br>
+    </div>
+    <div class="renglon">
         <label for="parrafo6">Parrafo</label>
         <textarea name="parrafo6" id="parrafo6" cols="100" rows="3">{{ news['paragraph6'] }}</textarea>
-        <br>
-        <input type="submit" value="Editar"/>
-        <a href="/index">Regresar</a>
-    </form>
+    </div>
+    <div class="renglon">
+        <input type="submit" value="Editar" />
+        <a class="cerrar-sesion" href="/index">Regresar</a>
+    </div>
+</form>
 {% endblock %}

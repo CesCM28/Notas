@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 
 <head>
+    <meta data-n-head="ssr" charset="utf-8">
     <title>{% block title %}{% endblock %} - El Democrata</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
@@ -27,12 +28,12 @@
         </div>
         <div>
             {% if g.user %}
-            <span>{{ g.user['username'] }}</span>
-            <a href="{{ url_for('index') }}">Inicio</a>
+            <!-- <a href="{{ url_for('index') }}">Inicio</a> -->
             <button onclick="OculatarMostrar('registro')">Registro</button>
             <button onclick="OculatarMostrar('tabla')">Listado</button>
             <button onclick="OculatarMostrar('usuarios')">Usuarios</button>
-            <a href="{{ url_for('logout') }}">Cerrar sesión</a>
+            <a class="cerrar-sesion" href="{{ url_for('logout') }}">Cerrar sesión</a>
+            <span>{{ g.user['username'] }}</span>
             {% else %}
             <a href="{{ url_for('login') }}">Iniciar sesión</a>
             {% endif %}
