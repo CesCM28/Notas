@@ -9,6 +9,10 @@
     <div class="renglon">
         <label for="titulo">Titulo</label>
         <input name="titulo" id="titulo" value="{{ news['title'] }}" required />
+        <label for="subtitulo">Subtitulo</label>
+        <input name="subtitulo" value="{{ news['subtitle'] }}" id="subtitulo"/>
+    </div>
+    <div class="renglon">
         <label for="imagen">link imagen</label>
         <input name="imagen" id="imagen" value="{{ news['link_img'] }}" required />
         <label for="categoria">categoria</label>
@@ -20,6 +24,11 @@
             <option value="{{ category['id_category'] }}">{{ category['description'] }}</option>
             {% endif %}
             {% endfor %}
+        </select>
+        <label for="estado">Estado</label>
+        <select name="estado" id="estado" required>
+            <option value="0">Oculto</option>
+            <option value="1" selected>Visible</option>
         </select>
     </div>
     <div class="renglon">
