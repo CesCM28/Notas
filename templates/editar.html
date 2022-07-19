@@ -32,6 +32,12 @@
         </select>
     </div>
     <div class="renglon">
+        <label for="video">Link video</label>
+        <input name="video" id="video" value="{{ news['link_video'] }}">
+        <label for="posicion">Despues del parrafo ...</label>
+        <input name="posicion" id="posicion" value="{{ news['position_video'] }}" required>
+    </div>
+    <div class="renglon">
         <label for="parrafo1">Parrafo</label>
         <textarea name="parrafo1" id="parrafo1" cols="100" rows="3" required>{{ news['paragraph1'] }}</textarea>
     </div>

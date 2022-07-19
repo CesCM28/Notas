@@ -66,7 +66,10 @@ def index():
     db, c = get_db()
     if request.method == 'POST':     
         titulo = request.form['titulo']
+        subtitulo = request.form['subtitulo']
         imagen = request.form['imagen']
+        video = request.form['video']
+        posicion = request.form['posicion']
         categoria = request.form['categoria']
         parrafo1 = request.form['parrafo1']
         parrafo2 = request.form['parrafo2']
@@ -76,9 +79,9 @@ def index():
         parrafo6 = request.form['parrafo6']
         c.execute(
             """
-            INSERT INTO news (id_category,created_at,title,paragraph1,paragraph2,paragraph3,paragraph4,paragraph5,paragraph6,link_img,created_by,status)
-            VALUES ( %s, curdate(),%s, %s, %s, %s, %s, %s, %s, %s, %s, 0)
-            """, (categoria,titulo,parrafo1,parrafo2,parrafo3,parrafo4,parrafo5,parrafo6,imagen,session['user_id'])
+            INSERT INTO news (id_category,created_at,title,subtitle,paragraph1,paragraph2,paragraph3,paragraph4,paragraph5,paragraph6,link_img,link_video,position_video,created_by,status)
+            VALUES ( %s, curdate(),%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, 0)
+            """, (categoria,titulo,subtitulo,parrafo1,parrafo2,parrafo3,parrafo4,parrafo5,parrafo6,imagen,video,posicion,session['user_id'])
         )
         db.commit()
 
@@ -108,7 +111,7 @@ def index():
 def editar(idnew):
     db, c = get_db()
     c.execute("""
-        select id_news,id_category,title,subtitle,paragraph1,paragraph2,paragraph3,paragraph4,paragraph5,paragraph6,link_img,status
+        select id_news,id_category,title,subtitle,paragraph1,paragraph2,paragraph3,paragraph4,paragraph5,paragraph6,link_img,link_video,position_video,status
         from news where id_news = %s
     """, (idnew,))
     news = c.fetchone()
@@ -120,6 +123,8 @@ def editar(idnew):
         titulo = request.form['titulo']
         subtitulo = request.form['subtitulo']
         imagen = request.form['imagen']
+        video = request.form['video']
+        posicion = request.form['posicion']
         categoria = request.form['categoria']
         parrafo1 = request.form['parrafo1']
         parrafo2 = request.form['parrafo2']
@@ -129,11 +134,12 @@ def editar(idnew):
         parrafo6 = request.form['parrafo6']
         c.execute(
             """
-            UPDATE news SET id_category = %s, title = %s, subtitle = %s, link_img = %s,
+            UPDATE news SET id_category = %s, title = %s, subtitle = %s, 
+            link_img = %s, link_video = %s, position_video = %s,
             paragraph1 = %s, paragraph2 = %s, paragraph3 = %s,
             paragraph4 = %s, paragraph5 = %s, paragraph6 = %s
             WHERE id_news = %s
-            """, (categoria,titulo,subtitulo,imagen,parrafo1,parrafo2,parrafo3,parrafo4,parrafo5,parrafo6,idnew)
+            """, (categoria,titulo,subtitulo,imagen,video,posicion,parrafo1,parrafo2,parrafo3,parrafo4,parrafo5,parrafo6,idnew)
         )
         db.commit()
         return redirect(url_for('index'))
