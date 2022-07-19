@@ -32,6 +32,7 @@
             <button onclick="OculatarMostrar('registro')">Registro</button>
             <button onclick="OculatarMostrar('tabla')">Listado</button>
             <button onclick="OculatarMostrar('usuarios')">Usuarios</button>
+            <a class="" href="{{ url_for('banner') }}">Banner</a>
             <a class="cerrar-sesion" href="{{ url_for('logout') }}">Cerrar sesión</a>
             <span>{{ g.user['username'] }}</span>
             {% else %}

@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+
+{% block header %}
+<h1>{% block title %}Notas{% endblock %}</h1>
+{% endblock %}
+
+{% block content %}
+<form method="post">
+    <div class="renglon">
+        <label for="name">Nombre</label>
+        <input name="name" id="name" value="{{ banner['name'] }}" required />
+    </div>
+    <div class="renglon">
+        <label for="imagen">link imagen</label>
+        <input name="imagen" id="imagen" value="{{ banner['link'] }}" required />
+    </div>
+    <div class="renglon">
+        <input type="submit" value="Editar" />
+        <a class="cerrar-sesion" href="/banner">Regresar</a>
+    </div>
+</form>
+{% endblock %}

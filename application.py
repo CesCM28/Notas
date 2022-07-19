@@ -93,6 +93,7 @@ def index():
         from news n 
         inner join categorys c
         on c.id_category = n.id_category
+        order by n.id_news desc
             '''
     )
     news = c.fetchall()
@@ -172,6 +173,35 @@ def users(id):
     user = c.fetchone()
 
     return render_template('users.html', user=user)
+
+
+@application.route('/banner')
+@login_required
+def banner():
+    db, c = get_db()
+    c.execute('select * from banners')
+    banners = c.fetchall()
+
+    return render_template('banner/listaBanner.html', banners=banners)
+
+
+@application.route('/<int:id>/banner', methods=['GET', 'POST'])
+@login_required
+def editarBanner(id):
+    db, c = get_db()
+    c.execute('select id_banner,link,name,status,site from banners where id_banner = %s', (id,))
+    banner = c.fetchone()
+
+    if request.method == 'POST':
+        name = request.form['name']
+        link = request.form['imagen']
+
+        c.execute('update banners set name = %s, link = %s where id_banner = %s', (name, link, id))
+        db.commit()
+        
+        return redirect(url_for('banner'))
+
+    return render_template('banner/editarBanner.html', banner=banner)
 
 
 @application.route('/logout')

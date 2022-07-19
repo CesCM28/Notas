@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+
+{% block header %}
+<h1>{% block title %}Notas{% endblock %}</h1>
+{% endblock %}
+
+{% block content %}
+
+<div class="show" id="tabla">
+    <table>
+        <thead>
+            <tr>
+                <th>id</th>
+                <th style="text-align: center;">Name</th>
+                <th style="text-align: center;">Lugar</th>
+                <th style="text-align: center;">Posicion</th>
+            </tr>
+        </thead>
+        {% for banner in banners %}
+        <tr>
+            <td class="center">
+                <a class="boton-editar" href="{{ url_for('editarBanner', id=banner['id_banner']) }}">{{ banner['id_banner'] }}</a>
+            </td>
+            <td>
+                {{ banner['name'] }}
+            </td>
+            <td>
+                {{ banner['site'] }}
+            </td>
+            <td style="text-align: center;">
+                {{ banner['order'] }}
+            </td>
+        </tr>
+        {% endfor %}
+    </table>
+</div>
+
+{% endblock %}
