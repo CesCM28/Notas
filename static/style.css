@@ -26,7 +26,17 @@ body {
     color: #fff;
     background-color: #c70000;
     font-size: bold;
-    padding: 4px;
+    padding: 4px 10px 4px 10px;;
+    border-radius: 4px;
+    text-decoration:none;
+    border: 1px solid #000;
+}
+
+.b-menu {
+    color: #fff;
+    background-color: #03BB85;
+    font-size: bold;
+    padding: 4px 10px 4px 10px;
     border-radius: 4px;
     text-decoration:none;
     border: 1px solid #000;
