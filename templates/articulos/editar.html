@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 
 {% block header %}
-<h1>{% block title %}Notas{% endblock %}</h1>
+<h1>{% block title %}Editor de Nota{% endblock %}</h1>
 {% endblock %}
 
 {% block content %}
@@ -40,7 +40,6 @@
     <div class="renglon">
         <label for="parrafo1">Parrafo</label>
         <textarea name="parrafo1" id="parrafo1" cols="100" rows="3" required>{{ news['paragraph1'] }}</textarea>
-    </div>
     <div class="renglon">
         <label for="parrafo2">Parrafo</label>
         <textarea name="parrafo2" id="parrafo2" cols="100" rows="3">{{ news['paragraph2'] }}</textarea>

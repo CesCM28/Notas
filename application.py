@@ -63,48 +63,10 @@ def load_logged_in_user():
 @application.route('/index', methods=['GET', 'POST'])
 @login_required
 def index():
-    db, c = get_db()
-    if request.method == 'POST':     
-        titulo = request.form['titulo']
-        subtitulo = request.form['subtitulo']
-        imagen = request.form['imagen']
-        video = request.form['video']
-        posicion = request.form['posicion']
-        categoria = request.form['categoria']
-        parrafo1 = request.form['parrafo1']
-        parrafo2 = request.form['parrafo2']
-        parrafo3 = request.form['parrafo3']
-        parrafo4 = request.form['parrafo4']
-        parrafo5 = request.form['parrafo5']
-        parrafo6 = request.form['parrafo6']
-        c.execute(
-            """
-            INSERT INTO news (id_category,created_at,title,subtitle,paragraph1,paragraph2,paragraph3,paragraph4,paragraph5,paragraph6,link_img,link_video,position_video,created_by,status)
-            VALUES ( %s, curdate(),%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, 0)
-            """, (categoria,titulo,subtitulo,parrafo1,parrafo2,parrafo3,parrafo4,parrafo5,parrafo6,imagen,video,posicion,session['user_id'])
-        )
-        db.commit()
+    #c.execute('SELECT id,username,password,name FROM user')
+    #users = c.fetchall()
 
-    c.execute(
-        '''
-        select c.description,n.id_news,n.id_category,n.created_at,n.title,
-            n.paragraph1,n.paragraph2,n.paragraph3,n.paragraph4,n.paragraph5,n.paragraph6,
-            n.link_img,n.created_by,n.status 
-        from news n 
-        inner join categorys c
-        on c.id_category = n.id_category
-        order by n.id_news desc
-            '''
-    )
-    news = c.fetchall()
-
-    c.execute('select id_category,description from categorys where status = 1')
-    categorys = c.fetchall()
-
-    c.execute('SELECT id,username,password,name FROM user')
-    users = c.fetchall()
-
-    return render_template('index.html', news=news, categorys=categorys, users=users)
+    return render_template('index.html') # users=users)
 
 
 @application.route('/editar/<int:idnew>', methods=['GET', 'POST'])
@@ -145,11 +107,22 @@ def editar(idnew):
         db.commit()
         return redirect(url_for('index'))
 
-    return render_template('editar.html', news=news, categorys=categorys)
+    return render_template('articulos/editar.html', news=news, categorys=categorys)
 
-@application.route('/<int:id>/users', methods=['GET', 'POST'])
+@application.route('/usuarios')
 @login_required
-def users(id):
+def usuarios():
+    db, c = get_db()
+    c.execute('select * from user')
+    users = c.fetchall()
+    print(users)
+
+    return render_template('usuarios/usuarios.html', users=users)
+
+
+@application.route('/<int:id>/usuarios', methods=['GET', 'POST'])
+@login_required
+def editarUsuario(id):
     db, c = get_db()
 
     if request.method == 'POST':
@@ -172,8 +145,7 @@ def users(id):
     c.execute('select id,username,password,name from user where id = %s', (id,))
     user = c.fetchone()
 
-    return render_template('users.html', user=user)
-
+    return render_template('usuarios/editarUsuarios.html', user=user)
 
 @application.route('/banner')
 @login_required
@@ -203,6 +175,50 @@ def editarBanner(id):
 
     return render_template('banner/editarBanner.html', banner=banner)
 
+@application.route('/articulos')
+@login_required
+def articulos():
+    db, c = get_db()
+
+    if request.method == 'POST':     
+        titulo = request.form['titulo']
+        subtitulo = request.form['subtitulo']
+        imagen = request.form['imagen']
+        video = request.form['video']
+        posicion = request.form['posicion']
+        categoria = request.form['categoria']
+        parrafo1 = request.form['parrafo1']
+        parrafo2 = request.form['parrafo2']
+        parrafo3 = request.form['parrafo3']
+        parrafo4 = request.form['parrafo4']
+        parrafo5 = request.form['parrafo5']
+        parrafo6 = request.form['parrafo6']
+        c.execute(
+            """
+            INSERT INTO news (id_category,created_at,title,subtitle,paragraph1,paragraph2,paragraph3,paragraph4,paragraph5,paragraph6,link_img,link_video,position_video,created_by,status)
+            VALUES ( %s, curdate(),%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, 0)
+            """, (categoria,titulo,subtitulo,parrafo1,parrafo2,parrafo3,parrafo4,parrafo5,parrafo6,imagen,video,posicion,session['user_id'])
+        )
+        db.commit()
+
+
+    c.execute(
+        '''
+        select c.description,n.id_news,n.id_category,n.created_at,n.title,
+            n.paragraph1,n.paragraph2,n.paragraph3,n.paragraph4,n.paragraph5,n.paragraph6,
+            n.link_img,n.created_by,n.status 
+        from news n 
+        inner join categorys c
+        on c.id_category = n.id_category
+        order by n.id_news desc
+            '''
+    )
+    news = c.fetchall()
+
+    c.execute('select id_category,description from categorys where status = 1')
+    categorys = c.fetchall()
+
+    return render_template('articulos/articulos.html', news=news, categorys=categorys)
 
 @application.route('/logout')
 def logout():

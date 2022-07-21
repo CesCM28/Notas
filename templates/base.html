@@ -29,10 +29,9 @@
         <div>
             {% if g.user %}
             <!-- <a href="{{ url_for('index') }}">Inicio</a> -->
-            <button onclick="OculatarMostrar('registro')">Registro</button>
-            <button onclick="OculatarMostrar('tabla')">Listado</button>
-            <button onclick="OculatarMostrar('usuarios')">Usuarios</button>
-            <a class="" href="{{ url_for('banner') }}">Banner</a>
+            <a class="b-menu" href="{{ url_for('usuarios') }}">Usuarios</a>
+            <a class="b-menu" href="{{ url_for('articulos') }}">Articulos</a>
+            <a class="b-menu" href="{{ url_for('banner') }}">Banner</a>
             <a class="cerrar-sesion" href="{{ url_for('logout') }}">Cerrar sesión</a>
             <span>{{ g.user['username'] }}</span>
             {% else %}

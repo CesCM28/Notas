@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+
+{% block header %}
+<h1>{% block title %}Listado de Usuarios{% endblock %}</h1>
+{% endblock %}
+
+{% block content %}
+<div class="show" id="usuarios">
+    <table>
+        <thead>
+            <tr>
+                <th>id</th>
+                <th>Username</th>
+                <th>Nombre</th>
+            </tr>
+        </thead>
+        {% for user in users %}
+        <tr>
+            <td class="center"><a class="boton-editar" href="{{ url_for('editarUsuario', id=user['id']) }}">{{ user['id'] }}</a></td>
+            <td>{{ user['username'] }}</td>
+            <td>{{ user['name'] }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+</div>
+{% endblock %}
