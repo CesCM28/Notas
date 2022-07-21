@@ -175,12 +175,14 @@ def editarBanner(id):
 
     return render_template('banner/editarBanner.html', banner=banner)
 
-@application.route('/articulos')
+@application.route('/articulos', methods=['GET', 'POST'])
 @login_required
 def articulos():
+    print('hola') 
     db, c = get_db()
 
-    if request.method == 'POST':     
+    if request.method == 'POST': 
+           
         titulo = request.form['titulo']
         subtitulo = request.form['subtitulo']
         imagen = request.form['imagen']
@@ -219,6 +221,7 @@ def articulos():
     categorys = c.fetchall()
 
     return render_template('articulos/articulos.html', news=news, categorys=categorys)
+
 
 @application.route('/logout')
 def logout():
