@@ -161,14 +161,15 @@ def banner():
 @login_required
 def editarBanner(id):
     db, c = get_db()
-    c.execute('select id_banner,link,name,status,site from banners where id_banner = %s', (id,))
+    c.execute('select id_banner,link,name,status,site,href_link from banners where id_banner = %s', (id,))
     banner = c.fetchone()
 
     if request.method == 'POST':
         name = request.form['name']
         link = request.form['imagen']
+        href_link = request.form['referencia']
 
-        c.execute('update banners set name = %s, link = %s where id_banner = %s', (name, link, id))
+        c.execute('update banners set name = %s, link = %s, href_link = %s where id_banner = %s', (name, link, href_link, id))
         db.commit()
         
         return redirect(url_for('banner'))
