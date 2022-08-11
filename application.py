@@ -6,8 +6,9 @@ from flask import (
 )
 from werkzeug.security import check_password_hash, generate_password_hash
 from DB.db import get_db
+import boto3
 
-
+URLImg = 'https://articlesimages.s3.amazonaws.com/'
 application = Flask(__name__)
 application.secret_key = "super secret key"
 
@@ -83,9 +84,17 @@ def editar(idnew):
     categorys = c.fetchall()
 
     if request.method == 'POST':
+        s3 = boto3.resource('s3')
+        print("Conectando el bucket..")
+        print("Enviando archivo...")
+        print("..............")
+
+        s3.Object('articlesimages', 'articles/nota{}.jpg'.format(idnew)).upload_file(request.form['imagen'], ExtraArgs={'ACL': 'public-read'})
+
+        print("Archivo cargado con exito")
         titulo = request.form['titulo']
         subtitulo = request.form['subtitulo']
-        imagen = request.form['imagen']
+        imagen = '{}articles/nota{}.jpg'.format(URLImg, idnew)  #request.form['imagen']
         video = request.form['video']
         posicion = request.form['posicion']
         categoria = request.form['categoria']

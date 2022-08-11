@@ -13,8 +13,9 @@
         <input name="subtitulo" value="{{ news['subtitle'] }}" id="subtitulo"/>
     </div>
     <div class="renglon">
-        <label for="imagen">link imagen</label>
+        <label for="imagen">link imagen local</label>
         <input name="imagen" id="imagen" value="{{ news['link_img'] }}" required />
+        <!-- <input type="file" name="imagen" id="urlimg" /> -->
         <label for="categoria">categoria</label>
         <select name="categoria" id="categoria" required>
             {% for category in categorys %}
