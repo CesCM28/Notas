@@ -84,17 +84,19 @@ def editar(idnew):
     categorys = c.fetchall()
 
     if request.method == 'POST':
-        s3 = boto3.resource('s3')
-        print("Conectando el bucket..")
-        print("Enviando archivo...")
-        print("..............")
+        if request.form['imagen'] == "":
+            imagen = news['link_img']
+        else:
+            s3 = boto3.resource('s3')
+            print("Enviando archivo...")
+            print("..............")
+            s3.Object('articlesimages', 'articles/nota{}.jpg'.format(idnew)).upload_file(request.form['imagen'], ExtraArgs={'ACL': 'public-read'})
+            print("Archivo cargado con exito")
+            imagen = '{}articles/nota{}.jpg'.format(URLImg, idnew)  #request.form['imagen']
+            
 
-        s3.Object('articlesimages', 'articles/nota{}.jpg'.format(idnew)).upload_file(request.form['imagen'], ExtraArgs={'ACL': 'public-read'})
-
-        print("Archivo cargado con exito")
         titulo = request.form['titulo']
         subtitulo = request.form['subtitulo']
-        imagen = '{}articles/nota{}.jpg'.format(URLImg, idnew)  #request.form['imagen']
         video = request.form['video']
         posicion = request.form['posicion']
         categoria = request.form['categoria']
@@ -104,14 +106,16 @@ def editar(idnew):
         parrafo4 = request.form['parrafo4']
         parrafo5 = request.form['parrafo5']
         parrafo6 = request.form['parrafo6']
+        status = request.form['estado']
         c.execute(
             """
             UPDATE news SET id_category = %s, title = %s, subtitle = %s, 
             link_img = %s, link_video = %s, position_video = %s,
             paragraph1 = %s, paragraph2 = %s, paragraph3 = %s,
-            paragraph4 = %s, paragraph5 = %s, paragraph6 = %s
+            paragraph4 = %s, paragraph5 = %s, paragraph6 = %s,
+            status = %s
             WHERE id_news = %s
-            """, (categoria,titulo,subtitulo,imagen,video,posicion,parrafo1,parrafo2,parrafo3,parrafo4,parrafo5,parrafo6,idnew)
+            """, (categoria,titulo,subtitulo,imagen,video,posicion,parrafo1,parrafo2,parrafo3,parrafo4,parrafo5,parrafo6,status,idnew)
         )
         db.commit()
         return redirect(url_for('index'))
@@ -192,10 +196,18 @@ def articulos():
     db, c = get_db()
 
     if request.method == 'POST': 
+        c.execute("SELECT max(id_news) + 1 as idnews FROM news")
+        news = c.fetchone()
+
+        s3 = boto3.resource('s3')
+        print("Enviando imagen...{}".format(news['idnews']))
+        print("..............")
+        s3.Object('articlesimages', 'articles/nota{}.jpg'.format(news['idnews'])).upload_file(request.form['imagen'], ExtraArgs={'ACL': 'public-read'})
+        print("Archivo cargado con exito")
            
         titulo = request.form['titulo']
         subtitulo = request.form['subtitulo']
-        imagen = request.form['imagen']
+        imagen = '{}articles/nota{}.jpg'.format(URLImg, news['idnews'])  #request.form['imagen']
         video = request.form['video']
         posicion = request.form['posicion']
         categoria = request.form['categoria']
@@ -205,11 +217,12 @@ def articulos():
         parrafo4 = request.form['parrafo4']
         parrafo5 = request.form['parrafo5']
         parrafo6 = request.form['parrafo6']
+        status = request.form['estado']
         c.execute(
             """
             INSERT INTO news (id_category,created_at,title,subtitle,paragraph1,paragraph2,paragraph3,paragraph4,paragraph5,paragraph6,link_img,link_video,position_video,created_by,status)
-            VALUES ( %s, curdate(),%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, 0)
-            """, (categoria,titulo,subtitulo,parrafo1,parrafo2,parrafo3,parrafo4,parrafo5,parrafo6,imagen,video,posicion,session['user_id'])
+            VALUES ( %s, curdate(),%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
+            """, (categoria,titulo,subtitulo,parrafo1,parrafo2,parrafo3,parrafo4,parrafo5,parrafo6,imagen,video,posicion,session['user_id'],status)
         )
         db.commit()
 
