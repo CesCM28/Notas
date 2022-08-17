@@ -7,6 +7,7 @@ from flask import (
 from werkzeug.security import check_password_hash, generate_password_hash
 from DB.db import get_db
 import boto3
+import requests
 
 URLImg = 'https://articlesimages.s3.amazonaws.com/'
 application = Flask(__name__)
@@ -87,10 +88,15 @@ def editar(idnew):
         if request.form['imagen'] == "":
             imagen = news['link_img']
         else:
-            s3 = boto3.resource('s3')
+            response = requests.get(request.form['imagen'])
             print("Enviando archivo...")
             print("..............")
-            s3.Object('articlesimages', 'articles/nota{}.jpg'.format(idnew)).upload_file(request.form['imagen'], ExtraArgs={'ACL': 'public-read'})
+            s3 = boto3.resource('s3')
+            s3_obj = s3.Object("articlesimages", 'articles/nota{}.jpg'.format(idnew))
+            s3_obj.put(ACL='public-read', Body=response.content)
+            #s3.Object('articlesimages', 'articles/nota{}asdf.{}'.format(idnew, extension)).upload_file('/'+filename, ExtraArgs={'ACL': 'public-read'})
+            #with open('/temp/' + filename, 'rb') as f:
+            #s3.meta.client.upload_file('/temp/'+filename, 'articlesimages', 'articles/nota{}asdf.{}'.format(idnew, extension), ExtraArgs={'ACL': 'public-read'})
             print("Archivo cargado con exito")
             imagen = '{}articles/nota{}.jpg'.format(URLImg, idnew)  #request.form['imagen']
             
@@ -199,11 +205,16 @@ def articulos():
         c.execute("SELECT max(id_news) + 1 as idnews FROM news")
         news = c.fetchone()
 
+        response = requests.get(request.form['imagen'])
         s3 = boto3.resource('s3')
-        print("Enviando imagen...{}".format(news['idnews']))
-        print("..............")
-        s3.Object('articlesimages', 'articles/nota{}.jpg'.format(news['idnews'])).upload_file(request.form['imagen'], ExtraArgs={'ACL': 'public-read'})
-        print("Archivo cargado con exito")
+        s3_obj = s3.Object('articlesimages', 'articles/nota{}.jpg'.format(news['idnews']))
+        s3_obj.put(ACL='public-read', Body=response.content)
+
+        #s3 = boto3.resource('s3')
+        #print("Enviando imagen...{}".format(news['idnews']))
+        #print("..............")
+        #s3.Object('articlesimages', 'articles/nota{}.jpg'.format(news['idnews'])).upload_file(request.form['imagen'], ExtraArgs={'ACL': 'public-read'})
+        #print("Archivo cargado con exito")
            
         titulo = request.form['titulo']
         subtitulo = request.form['subtitulo']
