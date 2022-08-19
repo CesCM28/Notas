@@ -1,5 +1,6 @@
 import functools
 from logging import error
+from warnings import catch_warnings
 from flask import Flask
 from flask import (
     flash, g, render_template, request, url_for, session, redirect
@@ -88,18 +89,21 @@ def editar(idnew):
         if request.form['imagen'] == "":
             imagen = news['link_img']
         else:
-            response = requests.get(request.form['imagen'])
-            print("Enviando archivo...")
-            print("..............")
-            s3 = boto3.resource('s3')
-            s3_obj = s3.Object("articlesimages", 'articles/nota{}.jpg'.format(idnew))
-            s3_obj.put(ACL='public-read', Body=response.content)
-            #s3.Object('articlesimages', 'articles/nota{}asdf.{}'.format(idnew, extension)).upload_file('/'+filename, ExtraArgs={'ACL': 'public-read'})
-            #with open('/temp/' + filename, 'rb') as f:
-            #s3.meta.client.upload_file('/temp/'+filename, 'articlesimages', 'articles/nota{}asdf.{}'.format(idnew, extension), ExtraArgs={'ACL': 'public-read'})
-            print("Archivo cargado con exito")
-            imagen = '{}articles/nota{}.jpg'.format(URLImg, idnew)  #request.form['imagen']
-            
+            try:
+                response = requests.get(request.form['imagen'])
+                print("Enviando archivo...")
+                print("..............")
+                s3 = boto3.resource('s3')
+                s3_obj = s3.Object("articlesimages", 'articles/nota{}.jpg'.format(idnew))
+                s3_obj.put(ACL='public-read', Body=response.content)
+                #s3.Object('articlesimages', 'articles/nota{}asdf.{}'.format(idnew, extension)).upload_file('/'+filename, ExtraArgs={'ACL': 'public-read'})
+                #with open('/temp/' + filename, 'rb') as f:
+                #s3.meta.client.upload_file('/temp/'+filename, 'articlesimages', 'articles/nota{}asdf.{}'.format(idnew, extension), ExtraArgs={'ACL': 'public-read'})
+                print("Archivo cargado con exito")
+                imagen = '{}articles/nota{}.jpg'.format(URLImg, idnew)  #request.form['imagen']
+            except Exception as e:
+                print(e)
+                return render_template('articulos/editar.html', news=news, categorys=categorys)
 
         titulo = request.form['titulo']
         subtitulo = request.form['subtitulo']
