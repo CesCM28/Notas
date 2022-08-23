@@ -93,7 +93,11 @@ def editar(idnew):
                 response = requests.get(request.form['imagen'])
                 print("Enviando archivo...")
                 print("..............")
-                s3 = boto3.resource('s3')
+                s3 = boto3.resource(
+                    's3',
+                    aws_access_key_id='AKIAYKRVB4XUTW3EGADB',
+                    aws_secret_access_key='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'
+                )
                 s3_obj = s3.Object("articlesimages", 'articles/nota{}.jpg'.format(idnew))
                 s3_obj.put(ACL='public-read', Body=response.content)
                 #s3.Object('articlesimages', 'articles/nota{}asdf.{}'.format(idnew, extension)).upload_file('/'+filename, ExtraArgs={'ACL': 'public-read'})
@@ -210,7 +214,11 @@ def articulos():
         news = c.fetchone()
 
         response = requests.get(request.form['imagen'])
-        s3 = boto3.resource('s3')
+        s3 = boto3.resource(
+            's3',
+            aws_access_key_id='AKIAYKRVB4XUTW3EGADB',
+            aws_secret_access_key='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'
+            )
         s3_obj = s3.Object('articlesimages', 'articles/nota{}.jpg'.format(news['idnews']))
         s3_obj.put(ACL='public-read', Body=response.content)
 
