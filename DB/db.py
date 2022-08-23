@@ -1,19 +1,14 @@
-from dis import Instruction
-from flask import flash
-import flask
 import mysql.connector
-import click
-from flask import current_app, g
-from flask.cli import with_appcontext
-
+from flask import g
+import os
 
 def get_db():
     if 'db' not in g:
         g.db = mysql.connector.connect(
-            host='dbeldemocrata.cggi3z2t9ytu.us-east-1.rds.amazonaws.com', #current_app.config['DATABASE_HOST'],
-            user='admin', #current_app.config['DATABASE_USER'],
-            password='UPgnR6LnDYka&VW*2T8pYfFDw', #current_app.config['DATABASE_PASSWORD'],
-            database='ElDemocrata'#current_app.config['DATABASE']
+            host=os.environ['DATABASE_HOST'],
+            user=os.environ['DATABASE_USER'],
+            password=os.environ['DATABASE_PASSWORD'],
+            database=os.environ['DATABASE']
         )
         g.c = g.db.cursor(dictionary=True)
     return g.db, g.c
