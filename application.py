@@ -9,6 +9,7 @@ from werkzeug.security import check_password_hash, generate_password_hash
 from DB.db import get_db
 import boto3
 import requests
+import os
 
 URLImg = 'https://articlesimages.s3.amazonaws.com/'
 application = Flask(__name__)
@@ -95,8 +96,8 @@ def editar(idnew):
                 print("..............")
                 s3 = boto3.resource(
                     's3',
-                    aws_access_key_id='AKIAYKRVB4XUTW3EGADB',
-                    aws_secret_access_key='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'
+                    aws_access_key_id=os.environ['AWS_ACCESS_KEY_ID'],
+                    aws_secret_access_key=os.environ['AWS_SECRET_ACCESS_KEY']
                 )
                 s3_obj = s3.Object("articlesimages", 'articles/nota{}.jpg'.format(idnew))
                 s3_obj.put(ACL='public-read', Body=response.content)
@@ -216,8 +217,8 @@ def articulos():
         response = requests.get(request.form['imagen'])
         s3 = boto3.resource(
             's3',
-            aws_access_key_id='AKIAYKRVB4XUTW3EGADB',
-            aws_secret_access_key='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'
+            aws_access_key_id=os.environ['AWS_ACCESS_KEY_ID'],
+            aws_secret_access_key=os.environ['AWS_SECRET_ACCESS_KEY']
             )
         s3_obj = s3.Object('articlesimages', 'articles/nota{}.jpg'.format(news['idnews']))
         s3_obj.put(ACL='public-read', Body=response.content)
